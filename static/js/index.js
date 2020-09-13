@@ -2610,7 +2610,7 @@ function getPokemonPopupContent (pokemon) {
     }
 
     // TODO: add evolution https://github.com/versx/DataParser/issues/9
-    const pokemonIcon = getPokemonIcon(pokemon.pokemon_id, pokemon.form, 0, pokemon.gender, pokemon.costume);
+    const pokemonIcon = getPokemonIcon(pokemon.pokemon_id, pokemon.form, 0, pokemon.gender, pokemon.costume, didIFindAShinyPokemon(pokemon.pokemon_id, pokemon.form, `wild-${pokemon.id}`));
 
     content +=
     '<div class="row">' + // START 1ST ROW
@@ -7308,7 +7308,7 @@ function setPokemonFilters(type, show) {
 // MARK: minigames that nobody asks for
 
 function didIFindAShinyPokemon(pokemonId, form, description) {
-    const rate = pokemonShinyRates[form ? `${pokemonId}-f${form}` : `${pokemonId}`];
+    if (flatShinyRate > 0 ) { const rate = pokemonShinyRates[form ? `${pokemonId}-f${form}` : `${pokemonId}`] || flatShinyRate;
     if (!rate) {
         return false;
     }
@@ -7326,4 +7326,5 @@ function didIFindAShinyPokemon(pokemonId, form, description) {
     };
     const lottery = `${myUsername}-${description}`;
     return cyrb53(lottery) % rate === 0;
+    }
 }
